@@ -74,9 +74,9 @@ class Vector3 {
    */
   rotateY(theta) {
     const A = [
-      [Math.cos(theta), 0, Math.sin(theta)],
+      [Math.cos(theta), 0, -Math.sin(theta)],
       [0, 1, 0],
-      [-Math.sin(theta), 0, Math.cos(theta)]
+      [Math.sin(theta), 0, Math.cos(theta)]
     ];
     /*
      const A = [

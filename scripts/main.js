@@ -6,8 +6,8 @@
   const CANVAS_HEIGHT = 600;
 
   // canvas
-  const GRID_WIDTH = 10;
-  const GRID_HEIGHT = 10;
+  const GRID_WIDTH = 23;
+  const GRID_HEIGHT = 23;
   const GRID_SIZE = 50;
 
   // camera
@@ -33,17 +33,23 @@
   function eventSetting() {
     window.addEventListener('keydown', (evnet) => {
       console.log(event.key);
-      if (event.key === 'ArrowRight') cameraRotY += Math.PI / 2;
-      else if (event.key === 'ArrowLeft') cameraRotY -= Math.PI / 2;
-      else if (event.key === 'ArrowUp') camera.z += GRID_SIZE;
-      else if (event.key === 'ArrowDown') camera.z -= GRID_SIZE;
+      if (event.key === 'ArrowRight') cameraRotY -= Math.PI / 10;
+      else if (event.key === 'ArrowLeft') cameraRotY += Math.PI / 10;
+      else if (event.key === 'ArrowUp') {
+        camera.x += Math.cos(cameraRotY + Math.PI / 2) * 10;
+        camera.z += Math.sin(cameraRotY + Math.PI / 2) * 10;
+      }
+      else if (event.key === 'ArrowDown') {
+        camera.x -= Math.cos(cameraRotY + Math.PI / 2) * 10;
+        camera.z -= Math.sin(cameraRotY + Math.PI / 2) * 10;
+      }
       camera.print();
       console.log(cameraRotY);
     });
   }
 
   function render() {
-    context.fillStyle = '#black';
+    context.fillStyle = 'gray';
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     for (let i = 0; i < GRID_HEIGHT; i++) for (let j = 0; j < GRID_WIDTH; j++) {
@@ -59,9 +65,11 @@
       context.lineTo(x4, y4);
 
       context.closePath();
-      context.strokeStyle = 'white';
+      context.strokeStyle = 'black';
       context.stroke();
 
+      context.fillStyle = ((i + j) % 2 === 0 ? 'black' : 'white');
+      context.fill();
     }
 
     requestAnimationFrame(render);
