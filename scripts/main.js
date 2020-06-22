@@ -12,6 +12,7 @@
 
   // camera
   let camera = null;
+  let cameraRotY = 0;
 
   window.addEventListener('load', () => {
     initialize();
@@ -32,11 +33,12 @@
   function eventSetting() {
     window.addEventListener('keydown', (evnet) => {
       console.log(event.key);
-      if (event.key === 'ArrowRight') camera.x += GRID_SIZE;
-      else if (event.key === 'ArrowLeft') camera.x -= GRID_SIZE;
+      if (event.key === 'ArrowRight') cameraRotY += Math.PI / 2;
+      else if (event.key === 'ArrowLeft') cameraRotY -= Math.PI / 2;
       else if (event.key === 'ArrowUp') camera.z += GRID_SIZE;
       else if (event.key === 'ArrowDown') camera.z -= GRID_SIZE;
       camera.print();
+      console.log(cameraRotY);
     });
   }
 
@@ -45,10 +47,10 @@
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     for (let i = 0; i < GRID_HEIGHT; i++) for (let j = 0; j < GRID_WIDTH; j++) {
-      const [x1, y1] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera);
-      const [x2, y2] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera);
-      const [x3, y3] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera);
-      const [x4, y4] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera);
+      const [x1, y1] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera, cameraRotY);
+      const [x2, y2] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera, cameraRotY);
+      const [x3, y3] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera, cameraRotY);
+      const [x4, y4] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera, cameraRotY);
 
       context.beginPath();
       context.moveTo(x1, y1);
