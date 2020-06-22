@@ -14,6 +14,9 @@
   let camera = null;
   let cameraRotY = 0;
 
+  // keyboard
+  window.isKeydown = {};
+
   window.addEventListener('load', () => {
     initialize();
   });
@@ -32,25 +35,37 @@
 
   function eventSetting() {
     window.addEventListener('keydown', (evnet) => {
+      isKeydown[`${event.key}`] = true;
       console.log(event.key);
-      if (event.key === 'ArrowRight') cameraRotY -= Math.PI / 10;
-      else if (event.key === 'ArrowLeft') cameraRotY += Math.PI / 10;
-      else if (event.key === 'ArrowUp') {
-        camera.x += Math.cos(cameraRotY + Math.PI / 2) * 10;
-        camera.z += Math.sin(cameraRotY + Math.PI / 2) * 10;
-      }
-      else if (event.key === 'ArrowDown') {
-        camera.x -= Math.cos(cameraRotY + Math.PI / 2) * 10;
-        camera.z -= Math.sin(cameraRotY + Math.PI / 2) * 10;
-      }
-      camera.print();
-      console.log(cameraRotY);
+    });
+    window.addEventListener('keyup', (event) => {
+      isKeydown[`${event.key}`] = false;
     });
   }
 
   function render() {
     context.fillStyle = 'gray';
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+    // カメラの位置と向きの更新
+    if (isKeydown.ArrowRight === true) cameraRotY -= Math.PI / 200;
+    if (isKeydown.ArrowLeft === true) cameraRotY += Math.PI / 200;
+
+    const dir = cameraRotY + Math.PI / 2;
+    if (isKeydown.ArrowUp === true) {
+      camera.x += Math.cos(dir) * 5;
+      camera.z += Math.sin(dir) * 5;
+    }
+    if (isKeydown.ArrowDown === true) {
+      camera.x -= Math.cos(dir) * 5;
+      camera.z -= Math.sin(dir) * 5;
+    }
+    if (isKeydown.Control === true) {
+      camera.y += 1;
+    }
+    if (isKeydown.Shift === true) {
+      camera.y -= 1;
+    }
 
     for (let i = 0; i < GRID_HEIGHT; i++) for (let j = 0; j < GRID_WIDTH; j++) {
       const [x1, y1] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera, cameraRotY);
