@@ -12,7 +12,6 @@
 
   // camera
   let camera = null;
-  let cameraRotY = 0;
 
   // keyboard
   window.isKeydown = {};
@@ -27,7 +26,7 @@
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
 
-    camera = new Vector3(GRID_SIZE / 2, 10, GRID_SIZE / 2);
+    camera = new Camera(GRID_SIZE / 2, 25, GRID_SIZE / 2, 0);
 
     eventSetting();
     render();
@@ -48,30 +47,13 @@
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     // カメラの位置と向きの更新
-    if (isKeydown.ArrowRight === true) cameraRotY -= Math.PI / 200;
-    if (isKeydown.ArrowLeft === true) cameraRotY += Math.PI / 200;
-
-    const dir = cameraRotY + Math.PI / 2;
-    if (isKeydown.ArrowUp === true) {
-      camera.x += Math.cos(dir) * 5;
-      camera.z += Math.sin(dir) * 5;
-    }
-    if (isKeydown.ArrowDown === true) {
-      camera.x -= Math.cos(dir) * 5;
-      camera.z -= Math.sin(dir) * 5;
-    }
-    if (isKeydown.Control === true) {
-      camera.y += 1;
-    }
-    if (isKeydown.Shift === true) {
-      camera.y -= 1;
-    }
+    camera.update();
 
     for (let i = 0; i < GRID_HEIGHT; i++) for (let j = 0; j < GRID_WIDTH; j++) {
-      const [x1, y1] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera, cameraRotY);
-      const [x2, y2] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera, cameraRotY);
-      const [x3, y3] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera, cameraRotY);
-      const [x4, y4] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera, cameraRotY);
+      const [x1, y1] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera.pos, camera.rotY);
+      const [x2, y2] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 0) * GRID_SIZE).adjust(camera.pos, camera.rotY);
+      const [x3, y3] = new Vector3((j + 1) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera.pos, camera.rotY);
+      const [x4, y4] = new Vector3((j + 0) * GRID_SIZE, 0, (i + 1) * GRID_SIZE).adjust(camera.pos, camera.rotY);
 
       context.beginPath();
       context.moveTo(x1, y1);
