@@ -35,7 +35,7 @@
   function eventSetting() {
     window.addEventListener('keydown', (evnet) => {
       isKeydown[`${event.key}`] = true;
-      console.log(event.key);
+      // console.log(event.key);
     });
     window.addEventListener('keyup', (event) => {
       isKeydown[`${event.key}`] = false;
@@ -43,7 +43,7 @@
   }
 
   function render() {
-    context.fillStyle = 'gray';
+    context.fillStyle = '#0A0A0A';
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
     // カメラの位置と向きの更新
@@ -62,10 +62,10 @@
       context.lineTo(x4, y4);
 
       context.closePath();
-      context.strokeStyle = 'black';
+      context.strokeStyle = '0A0A0A';
       context.stroke();
 
-      context.fillStyle = ((i + j) % 2 === 0 ? 'black' : 'white');
+      context.fillStyle = ((i + j) % 2 === 0 ? '#4C6085' : '#F2F7F2');
       context.fill();
     }
 

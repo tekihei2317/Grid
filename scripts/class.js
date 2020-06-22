@@ -29,6 +29,6 @@ class Camera {
       this.pos.z -= Math.sin(dir) * 5;
     }
     if (isKeydown.Control === true) this.pos.y += 1;
-    if (isKeydown.Shift === true) this.pos.y -= 1;
+    if (isKeydown.Shift === true) this.pos.y -= 1, this.pos.y = Math.max(this.pos.y, 20);
   }
 }

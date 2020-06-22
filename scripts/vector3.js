@@ -43,17 +43,6 @@ class Vector3 {
   }
 
   /**
-   * カメラからの相対位置(を補正したもの)を返す
-   */
-  adjust(camera, cameraRotY) {
-    const relativePos = this.sub(camera).rotateY(-cameraRotY);
-    return [
-      relativePos.x / relativePos.z * 1000 + 300,
-      -relativePos.y / relativePos.z * 1000 + 300
-    ];
-  }
-
-  /**
    * x軸回りに回転する(時計回り...?)
    * @param {number} theta - 回転する角度(ラジアン)
    */
@@ -95,5 +84,22 @@ class Vector3 {
    */
   print() {
     console.log(`(${this.x}, ${this.y}, ${this.z})`);
+  }
+
+  /**
+   * カメラからの相対位置(を補正したもの)を返す
+   */
+  adjust(camera, cameraRotY) {
+    const relativePos = this.sub(camera).rotateY(-cameraRotY);
+    if (relativePos.z <= 0) {
+      return [
+        relativePos.x / 0.1 * 1000 + 300,
+        -relativePos.y / 0.1 * 1000 + 300
+      ];
+    }
+    return [
+      relativePos.x / relativePos.z * 1000 + 300,
+      -relativePos.y / relativePos.z * 1000 + 300
+    ];
   }
 }
