@@ -89,8 +89,8 @@ class Vector3 {
   /**
    * カメラからの相対位置(を補正したもの)を返す
    */
-  adjust(camera, cameraRotY) {
-    const relativePos = this.sub(camera).rotateY(-cameraRotY);
+  adjust(camera) {
+    const relativePos = this.sub(camera.pos).rotateY(-camera.rotY).rotateX(-camera.rotX);
     if (relativePos.z <= 0) {
       return [
         relativePos.x / 0.1 * 1000 + 300,
